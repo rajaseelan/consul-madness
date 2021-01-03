@@ -1,0 +1,4 @@
+export KUBECONFIG=/etc/kubernetes/admin.conf
+alias k=kubectl
+export do=' --dry-run=client -oyaml '
+
