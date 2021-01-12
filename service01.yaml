@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: service01
+  name: service01
+  namespace: service01
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: service01
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: service01
+      annotations:
+        'consul.hashicorp.com/connect-inject': 'true'
+    spec:
+      volumes:
+        - name: shared-vol
+          emptyDir: {}
+      initContainers:
+      - name: busybox
+        image: busybox
+        command:
+          - /bin/sh
+          - -c
+          - "echo service01 > /shared/index.html"
+        volumeMounts:
+          - name: shared-vol
+            mountPath: /shared/
+      containers:
+      - image: nginx:1.19.6
+        name: service01
+        ports:
+          - containerPort: 80
+        env:
+          - name: NGINX_PORT
+            value: "localhost:80"
+        volumeMounts:
+          - name: shared-vol
+            mountPath: /usr/share/nginx/html
+        resources: {}
+status: {}
