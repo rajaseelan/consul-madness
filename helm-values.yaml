@@ -1,15 +1,23 @@
 # Choose an optional name for the datacenter
 global:
   datacenter: minidc
+  name: consul
 
 # Enable the Consul Web UI via a NodePort
 ui:
   service:
     type: 'NodePort'
 
+ui_config:
+  enabled: true
+  metrics_provider: prometheus
+  metrics_proxy:
+    base_url: "http://prometheus-server.prometheus"
+
 # Enable Connect for secure communication between nodes
 connectInject:
   enabled: true
+  #
 # Enable CRD controller
 controller:
   enabled: true
@@ -22,7 +30,7 @@ server:
   replicas: 3
   bootstrapExpect: 3
   storage: 1Gi
-  storageClass: openebs-hostpath
+  #storageClass: openebs-hostpath
   disruptionBudget:
     enabled: true
     maxUnavailable: 1
