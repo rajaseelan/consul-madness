@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: consumer-svc01
+  name: consumer-svc01
+  namespace: consumer
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: consumer-svc01
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: consumer-svc01
+      annotations:
+        'consul.hashicorp.com/connect-inject': 'true'
+        'consul.hashicorp.com/connect-service-upstreams': 'service01:80'
+    spec:
+      containers:
+      - image: busybox
+        name: consumer-svc01
+        command:
+          - /bin/sh
+          - -c
+          - 'while true; do echo -n "$(date) "; wget localhost -qO - ; sleep 1; done '
+        resources: {}
+status: {}
