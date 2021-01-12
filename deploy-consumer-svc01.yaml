@@ -19,7 +19,7 @@ spec:
         app: consumer-svc01
       annotations:
         'consul.hashicorp.com/connect-inject': 'true'
-        'consul.hashicorp.com/connect-service-upstreams': 'service01:80'
+        'consul.hashicorp.com/connect-service-upstreams': 'service01:80,service02:81'
     spec:
       containers:
       - image: busybox
@@ -27,6 +27,6 @@ spec:
         command:
           - /bin/sh
           - -c
-          - 'while true; do echo -n "$(date) "; wget localhost -qO - ; sleep 1; done '
+          - 'while true; do echo -n "$(date) "; echo "$(wget -qO - ${SERVICE01_CONNECT_SERVICE_HOST}:${SERVICE01_CONNECT_SERVICE_PORT}) $(wget -qO - localhost:81)"  ; sleep 1; done '
         resources: {}
 status: {}
