@@ -1,4 +1,10 @@
 export KUBECONFIG=/etc/kubernetes/admin.conf
 alias k=kubectl
+alias kc="kubectl -n consul "
+alias hc="helm -n consul "
 export do=' --dry-run=client -oyaml '
+
+echo "Consul Helm Charts: helm repo add hashicorp https://helm.releases.hashicorp.com"
+echo "Update - helm repo update"
+echo "Install helm: helm install --create-namespace -n consul consul hashicorp/consul -f helm-values.yaml"
 
